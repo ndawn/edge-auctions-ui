@@ -68,7 +68,6 @@ const usePushPermission = () => {
       });
     }
 
-    console.log(subscription);
     await subscribeToPush(subscription).unwrap();
   };
 
