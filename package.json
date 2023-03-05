@@ -1,0 +1,64 @@
+{
+    "name": "edge_auctions_ui",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@emotion/react": "^11.10.5",
+        "@emotion/styled": "^11.10.5",
+        "@mui/icons-material": "^5.11.0",
+        "@mui/lab": "^5.0.0-alpha.119",
+        "@mui/material": "^5.11.8",
+        "@mui/system": "^5.11.8",
+        "@reduxjs/toolkit": "^1.9.2",
+        "auth0-js": "^9.20.1",
+        "dayjs": "^1.11.7",
+        "pluralize-ru": "^1.0.1",
+        "re-carousel": "^2.4.0",
+        "react": "^18.2.0",
+        "react-bus": "^3.0.0",
+        "react-countdown": "^2.3.5",
+        "react-dom": "^18.2.0",
+        "react-perfect-scrollbar": "^1.5.8",
+        "react-redux": "^8.0.5",
+        "react-router-dom": "^6.8.1",
+        "socket.io-client": "^4.6.0",
+        "use-toast-mui": "^0.0.4",
+        "vite-jsconfig-paths": "^2.0.1",
+        "vite-plugin-svgr": "^2.4.0",
+        "yup": "^1.0.0"
+    },
+    "devDependencies": {
+        "@types/react": "^18.0.27",
+        "@types/react-dom": "^18.0.10",
+        "@vitejs/plugin-react": "^3.1.0",
+        "sass": "^1.58.0",
+        "vite": "^4.1.0"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app"
+        ]
+    },
+    "babel": {
+        "presets": [
+            "@babel/preset-react"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            "defaults",
+            "not IE 11"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
+}
