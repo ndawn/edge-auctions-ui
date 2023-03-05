@@ -10,9 +10,7 @@ const updateSubscription = (subscription) => fetch(
 );
 
 self.addEventListener('push', (event) => {
-  console.log(event);
   const payload = event.data.json();
-  console.log(payload);
 
   event.waitUntil(
     self.clients
@@ -20,13 +18,11 @@ self.addEventListener('push', (event) => {
       .then((clientList) => {
         for (let i = 0; i < clientList.length; i++) {
           const client = clientList[i];
-          console.log(client.url);
           if (client.url === event.target.registration.scope) {
             client.postMessage({
               type: 'push',
               data: payload,
             });
-            console.log('Posted message to a client:', client);
           }
         }
 
@@ -69,8 +65,6 @@ self.addEventListener('message', (event) => {
 });
 
 self.addEventListener('notificationclick', (event) => {
-  console.log(event.notification.data);
-
   event.notification.close();
 
   event.waitUntil(clients.matchAll({ type: 'window' })

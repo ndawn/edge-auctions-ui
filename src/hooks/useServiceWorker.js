@@ -21,12 +21,12 @@ const useServiceWorker = () => {
       return;
     }
 
-    registration = await navigator.serviceWorker.getRegistration('/sw.js');
+    registration = await navigator.serviceWorker.getRegistration('/auctions_sw.js');
 
     if (registration !== undefined) {
       await registration.update();
     } else {
-      registration = await navigator.serviceWorker.register('/sw.js');
+      registration = await navigator.serviceWorker.register('/auctions_sw.js');
     }
 
     let serviceWorker_;
