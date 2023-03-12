@@ -1,4 +1,5 @@
 const config = {
+  basename: '',
   fontFamily: `'Inter', sans-serif`,
   borderRadius: 12,
   defaultAntiSniper: 10,
