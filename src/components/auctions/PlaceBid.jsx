@@ -45,20 +45,34 @@ const BidValue = ({ auction, open, isBuyout, onBidCreated, onClose }) => {
   const [ bidValue, setBidValue ] = useState(0);
   const [ bidMinValue, setBidMinValue ] = useState(0);
 
+  const getAppropriateValue = (start) => {
+    let result = start;
+
+    while (result / auction.item.priceCategory.bidMultipleOf !== 0) {
+      result++;
+    }
+
+    return result;
+  };
+
   useEffect(() => {
     if (isBuyout && auction.item.priceCategory.buyNowPrice) {
       setBidMinValue(auction.item.priceCategory.buyNowPrice);
       setBidValue(auction.item.priceCategory.buyNowPrice);
     } else {
       setBidMinValue(
-        auction.lastBidValue
-          ? auction.lastBidValue + auction.item.priceCategory.bidMinStep
-          : auction.item.priceCategory.bidStartPrice
+        getAppropriateValue(
+          auction.lastBidValue
+            ? auction.lastBidValue + auction.item.priceCategory.bidMinStep
+            : auction.item.priceCategory.bidStartPrice
+        )
       );
       setBidValue(
-        auction.lastBidValue
-          ? auction.lastBidValue + auction.item.priceCategory.bidMinStep
-          : auction.item.priceCategory.bidStartPrice
+        getAppropriateValue(
+          auction.lastBidValue
+            ? auction.lastBidValue + auction.item.priceCategory.bidMinStep
+            : auction.item.priceCategory.bidStartPrice
+        )
       );
     }
   }, [auction, isBuyout]);
