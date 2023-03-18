@@ -17,6 +17,8 @@ const usePushPermission = () => {
   useEffect(() => {
     if (!isLoading && publicKey && serviceWorker) {
       const key = urlBase64ToUint8Array(publicKey.key);
+      console.log(publicKey);
+      console.log(key);
       requestPermission(key).then((state) => subscribe(key));
     }
   }, [serviceWorker, isLoading, publicKey]);
