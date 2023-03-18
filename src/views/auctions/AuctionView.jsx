@@ -34,12 +34,13 @@ const AuctionView = () => {
       toast.success('Ставка размещена');
     } catch (err) {
       console.error(err);
+      console.error(err?.data?.extra?.reason);
 
       if (err?.data?.extra?.reason) {
-        refetch();
         return createBidFailReason[err.data.extra.reason];
       }
 
+      refetch();
       toast.error('Ошибка при размещении ставки');
     }
 

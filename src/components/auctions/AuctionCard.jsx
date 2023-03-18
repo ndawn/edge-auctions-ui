@@ -78,7 +78,6 @@ const AuctionCard = ({ auction }) => {
   });
 
   useListener(`auctionDateDueUpdated:${auction.id}`, (payload) => {
-    console.log(payload);
     setDateDueContainer((prevAuction) => ({ ...prevAuction, dateDue: payload.dateDue }));
     setDateDueChanged(true);
     setTimeout(() => setDateDueChanged(false), 2000);
