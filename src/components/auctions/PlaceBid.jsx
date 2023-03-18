@@ -48,7 +48,7 @@ const BidValue = ({ auction, open, isBuyout, onBidCreated, onClose }) => {
   const getAppropriateValue = (start) => {
     let result = start;
 
-    while (result / auction.item.priceCategory.bidMultipleOf !== 0) {
+    while (result % auction.item.priceCategory.bidMultipleOf !== 0) {
       result++;
     }
 
