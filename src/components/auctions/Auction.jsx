@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Button as BaseButton, ButtonGroup, Typography } from '@mui/material';
@@ -6,15 +6,14 @@ import Grid from '@mui/material/Unstable_Grid2';
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
 import { styled } from '@mui/material/styles';
 
-import { areBidsAvailable as areBidsAvailableHelper, isBuyoutAvailable } from 'utils/auctions';
-
-import BidValue from './BidValue';
-import PlaceBid from './PlaceBid';
-import TimeLeftTimer from './TimeLeftTimer';
+import BidValue from 'components/auctions/BidValue';
+import PlaceBid from 'components/auctions/PlaceBid';
+import TimeLeftTimer from 'components/auctions/TimeLeftTimer';
 import ItemDescription from 'components/ItemDescription';
 import ImageCarousel from 'components/ImageCarousel';
-import { useState } from 'react';
 import ItemHeader from 'components/ItemHeader';
+import { areBidsAvailable as areBidsAvailableHelper, isBuyoutAvailable } from 'utils/auctions';
+import dayjs from 'utils/dayjs';
 
 const Button = styled(BaseButton)({
   paddingTop: '12px',
@@ -32,6 +31,7 @@ const Auction = ({ auction, onBidCreated, onCompleted }) => {
   const [ isBuyout, setIsBuyout ] = useState(false);
 
   const areBidsAvailable = useMemo(() => areBidsAvailableHelper(auction), [auction]);
+  const dateDue = useMemo(() => dayjs(auction.dateDue), [auction]);
 
   const onBuyoutClick = () => {
     setIsBuyout(true);
@@ -75,7 +75,7 @@ const Auction = ({ auction, onBidCreated, onCompleted }) => {
                   marginBottom: '24px',
                 }}
               />
-              {auction.endedAt === null ? (
+              {+dateDue > Date.now() ? (
                 <TimeLeftTimer
                   auction={auction}
                   sx={{ margin: '24px 0' }}
