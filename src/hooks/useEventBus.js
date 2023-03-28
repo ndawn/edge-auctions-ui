@@ -9,9 +9,10 @@ const useEventBus = () => {
   const embedManager = useContext(EmbedManagerContext);
 
   const handleWorkerMessage = (event) => {
-    console.log('[Event Bus] Received event:', event.data.data);
-    const { type, auctionId, ...payload } = event.data.data;
+    const { type, auctionId, ...payload } = event.data.payload;
     const key = `${type}:${auctionId}`;
+    console.log(event.data.payload);
+    console.log(key);
     bus.emit(key, payload);
   };
 

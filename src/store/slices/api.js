@@ -57,12 +57,11 @@ export const apiSlice = createApi({
       }),
       transformErrorResponse,
     }),
-    getPublicKey: builder.query({ query: () => '/push/key' }),
     subscribeToPush: builder.mutation({
-      query: (subscriptionInfo) => ({
+      query: (token) => ({
         url: '/push/subscribe',
         method: 'POST',
-        body: subscriptionInfo,
+        body: { token },
       }),
       transformErrorResponse,
     }),
@@ -77,6 +76,5 @@ export const {
   useGetWonAuctionsQuery,
   useGetAuctionQuery,
   useCreateBidMutation,
-  useGetPublicKeyQuery,
   useSubscribeToPushMutation,
 } = apiSlice;

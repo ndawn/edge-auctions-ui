@@ -1,86 +1,51 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { useGetPublicKeyQuery, useSubscribeToPushMutation } from 'store/slices/api';
-import ServiceWorkerContext from 'utils/serviceWorkerContext';
-import urlBase64ToUint8Array from 'utils/urlBase64ToUint8Array';
+import { useSubscribeToPushMutation } from 'store/slices/api';
 import EmbedManagerContext from 'utils/embedManagerContext';
+import { FirebaseContext } from 'layout/base/FirebaseContext';
 
 const usePushPermission = () => {
-  const { data: publicKey, isLoading } = useGetPublicKeyQuery();
-  const [ subscribeToPush, subscribeToPushResult ] = useSubscribeToPushMutation();
+  const [ subscribeToPush ] = useSubscribeToPushMutation();
 
-  const serviceWorker = useContext(ServiceWorkerContext);
   const embedManager = useContext(EmbedManagerContext);
+  const firebase = useContext(FirebaseContext);
 
-  const [ permissionState, setPermissionState ] = useState(null);
+  const [ hasPermission, setHasPermission ] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && publicKey && serviceWorker) {
-      const key = urlBase64ToUint8Array(publicKey.key);
-      console.log(publicKey);
-      console.log(key);
-      requestPermission(key).then((state) => subscribe(key));
-    }
-  }, [serviceWorker, isLoading, publicKey]);
+    subscribe();
+  }, []);
 
-  const requestPermission = async (serverPublicKey) => {
-    let state;
+  const requestPermission = async () => {
+    let token;
 
     if (window.parent !== window) {
-      state = await embedManager.requestPermission({
-        userVisibleOnly: true,
-        applicationServerKey: serverPublicKey,
-      });
+      token = await embedManager.requestPermission();
     } else {
-      state = await serviceWorker.pushManager.permissionState({
-        userVisibleOnly: true,
-        applicationServerKey: serverPublicKey,
-      });
+      const permissionState = await Notification.requestPermission();
 
-      if (state === 'prompt') {
-        state = await Notification.requestPermission();
+      if (permissionState === 'granted') {
+        token = await firebase.getToken();
+        console.log(token);
       }
     }
 
-    setPermissionState(state);
+    setHasPermission(token !== undefined);
+
+    return token;
   };
 
-  const subscribe = async (serverPublicKey) => {
-    let subscription;
+  const subscribe = async () => {
+    const token = await requestPermission();
 
-    if (embedManager.isEmbedded) {
-      subscription = await embedManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: serverPublicKey,
-      });
+    if (token) {
+      await subscribeToPush(token).unwrap();
     } else {
-      subscription = await serviceWorker.pushManager.getSubscription({
-        userVisibleOnly: true,
-        applicationServerKey: serverPublicKey,
-      });
-
-      if (subscription !== null) {
-        await subscribeToPush(subscription).unwrap();
-        return;
-      }
-
-      subscription = await pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: serverPublicKey,
-      });
+      console.error('Push permission denied');
     }
-
-    await subscribeToPush(subscription).unwrap();
   };
 
-  // const unsubscribe = async () => {
-  //   if (pushSubscription !== null) {
-  //     await pushSubscription.unsubscribe();
-  //     setPushSubscription(null);
-  //   }
-  // };
-
-  return permissionState;
+  return hasPermission;
 };
 
 export default usePushPermission;

@@ -1,13 +1,4 @@
-import { useEffect, useState } from 'react';
-
 const useEmbedManager = () => {
-  const [ isEmbedded, setIsEmbedded ] = useState(false);
-
-  
-  useEffect(() => {
-    setIsEmbedded(window.parent !== window);
-  }, []);
-
   const returnResponseMessage = (eventType, resolve) => {
     const returnResponseMessageHandler = (event) => {
       if (event.source !== window.parent || event.data?.type !== eventType) {
@@ -29,6 +20,7 @@ const useEmbedManager = () => {
   );
 
   const pushHandler = (callback) => (event) => {
+    console.log(event);
     if (event.data.type === 'push') {
       callback(event);
     }
@@ -43,10 +35,7 @@ const useEmbedManager = () => {
   };
 
   return {
-    isEmbedded,
-    registerServiceWorker: message('registerServiceWorker'),
     requestPermission: message('requestPermission'),
-    subscribe: message('pushSubscribe'),
     subscribeOnServiceWorkerMessages,
     unsubscribeFromServiceWorkerMessages,
   };

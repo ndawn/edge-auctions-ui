@@ -18,7 +18,7 @@ const StyledContainer = styled(Container)({
 const BaseContainer = ({ title, children, ...props }) => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const pushPermissionState = useContext(PushPermissionContext);
+  const hasPushPermission = useContext(PushPermissionContext);
 
   const goBack = () => {
     navigate(-1);
@@ -28,7 +28,7 @@ const BaseContainer = ({ title, children, ...props }) => {
     <StyledContainer {...props}>
       <Box sx={{ display: 'flex', flexDirection: 'row-reverse', justifyContent: 'space-between' }}>
         <Box>
-          {pushPermissionState !== 'granted' && <PushDeniedWarning />}
+          {!hasPushPermission && <PushDeniedWarning />}
           <MyAuctionsIcon />
         </Box>
         <Box>

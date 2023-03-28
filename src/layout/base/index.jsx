@@ -3,9 +3,9 @@ import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import Sidebar from './Sidebar';
-import ServiceWorkerContextProvider from './ServiceWorkerContextProvider';
 import PushPermissionContextProvider from './PushPermissionContextProvider';
 import EventBusContextProvider from './EventBusContextProvider';
+import { FirebaseProvider } from './FirebaseContext';
 import useEmbedManager from 'hooks/useEmbedManager';
 import EmbedManagerContext from 'utils/embedManagerContext';
 
@@ -14,10 +14,10 @@ const BaseLayout = () => {
 
   return (
     <EmbedManagerContext.Provider value={embedManager}>
-      <ServiceWorkerContextProvider>
+      <FirebaseProvider>
         <PushPermissionContextProvider>
           <EventBusContextProvider>
-            {embedManager.isEmbedded ? <Outlet /> : (
+            {window.parent !== window ? <Outlet /> : (
               <>
                 <Sidebar />
                 <Header />
@@ -27,7 +27,7 @@ const BaseLayout = () => {
             )}
           </EventBusContextProvider>
         </PushPermissionContextProvider>
-      </ServiceWorkerContextProvider>
+      </FirebaseProvider>
     </EmbedManagerContext.Provider>
   );
 };
