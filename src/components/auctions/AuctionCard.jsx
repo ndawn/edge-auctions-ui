@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Box, Paper } from '@mui/material';
@@ -6,7 +6,7 @@ import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
 import { styled, useTheme } from '@mui/material/styles';
 import { useListener } from 'react-bus';
 
-import { antiSniperEnabled, getMainImage } from 'utils/auctions';
+import { getMainImage } from 'utils/auctions';
 import ClampedText from 'components/ClampedText';
 import BlurContainer from 'components/BlurContainer';
 import BidValue from './BidValue';
@@ -50,6 +50,7 @@ const Content = styled(Box)({
 const ContentSection = styled(Box)({
   display: 'flex',
   justifyContent: 'space-between',
+  gap: '4px',
   color: 'inherit !important',
 });
 
@@ -104,6 +105,7 @@ const AuctionCard = ({ auction }) => {
                 variant="caption"
                 title={auction.item.type.name}
                 color={theme.palette.primary.light}
+                fontSize="0.9em"
               >
                 <WidgetsOutlinedIcon
                   sx={{
@@ -115,7 +117,7 @@ const AuctionCard = ({ auction }) => {
                 />
                 {auction.item.type.name}
               </ClampedText>
-              <ClampedText title={auction.item.name}>{auction.item.name}</ClampedText>
+              <ClampedText title={auction.item.name} fontSize="1em">{auction.item.name}</ClampedText>
             </BlurContainer>
           </ContentSection>
         </Content>

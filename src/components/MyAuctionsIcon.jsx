@@ -12,7 +12,7 @@ const MyAuctionsIcon = () => {
     <Tooltip title="Мои аукционы">
       <Link to="/my">
         <Badge color="error" variant="dot" overlap="circular" invisible={!packs || packs.length === 0}>
-          <IconButton sx={{ color: 'white' }}>
+          <IconButton sx={{ padding: 0, color: 'white' }}>
             <EmojiEventsOutlinedIcon sx={{ fontSize: '1.5em', color: 'white', textDecoration: 'none' }} />
           </IconButton>
         </Badge>

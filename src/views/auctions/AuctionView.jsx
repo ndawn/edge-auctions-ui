@@ -10,6 +10,7 @@ import BaseContainer from 'components/BaseContainer';
 import { createBidFailReason } from 'store/constant';
 import { useEffect } from 'react';
 import AuctionUpdater from 'components/auctions/AuctionUpdater';
+import NoAuctions from 'components/auctions/NoAuctions';
 
 const AuctionView = () => {
   const params = useParams();
@@ -19,6 +20,7 @@ const AuctionView = () => {
   const [ createBid, createBidResult ] = useCreateBidMutation();
 
   const [ updater, setUpdater ] = useState(null);
+  const [ notFound, setNotFound ] = useState(false);
 
   useEffect(() => {
     if (auction && auction.endedAt === null) {
@@ -26,7 +28,11 @@ const AuctionView = () => {
     } else {
       setUpdater(null);
     }
-  }, [auction]);
+
+    if (!isFetching && !auction) {
+      setNotFound(true);
+    }
+  }, [auction, isFetching]);
 
   const onBidCreated = async (value) => {
     try {
@@ -56,10 +62,14 @@ const AuctionView = () => {
       {isFetching
         ? <AuctionViewSkeleton />
         : (
-          <>
-            {updater}
-            <Auction auction={auction} onBidCreated={onBidCreated} onCompleted={onCompleted} />
-          </>
+          !auction
+          ? <NoAuctions />
+          : (
+            <>
+              {updater}
+              <Auction auction={auction} onBidCreated={onBidCreated} onCompleted={onCompleted} />
+            </>
+          )
         )}
     </BaseContainer>
   );

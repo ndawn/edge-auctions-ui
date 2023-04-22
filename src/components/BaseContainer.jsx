@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 import { Box, Container, Link, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
@@ -12,6 +12,7 @@ const StyledContainer = styled(Container)({
   marginTop: '48px',
   marginBottom: '48px',
   overflow: 'hidden',
+  maxWidth: '1408px',
   minHeight: 'calc(100vh - 288px)',
 });
 
@@ -21,13 +22,13 @@ const BaseContainer = ({ title, children, ...props }) => {
   const hasPushPermission = useContext(PushPermissionContext);
 
   const goBack = () => {
-    navigate(-1);
+    navigate('/');
   };
 
   return (
     <StyledContainer {...props}>
       <Box sx={{ display: 'flex', flexDirection: 'row-reverse', justifyContent: 'space-between' }}>
-        <Box>
+        <Box sx={{ display: 'flex', gap: '8px' }}>
           {!hasPushPermission && <PushDeniedWarning />}
           <MyAuctionsIcon />
         </Box>

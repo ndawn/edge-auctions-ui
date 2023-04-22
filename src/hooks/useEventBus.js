@@ -11,8 +11,6 @@ const useEventBus = () => {
   const handleWorkerMessage = (event) => {
     const { type, auctionId, ...payload } = event.data.payload;
     const key = `${type}:${auctionId}`;
-    console.log(event.data.payload);
-    console.log(key);
     bus.emit(key, payload);
   };
 

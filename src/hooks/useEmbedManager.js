@@ -1,4 +1,27 @@
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
 const useEmbedManager = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (window.parent !== window) {
+      const observer = new ResizeObserver((entries) => {
+        const bounds = entries[0].target.getBoundingClientRect();
+        const height = bounds.top * 2 + bounds.height;
+        window.parent.postMessage({ type: 'height', value: height }, 'https://edgecomics.ru');
+      });
+
+      observer.observe(document.body);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'location', value: location.pathname }, 'https://edgecomics.ru');
+    }
+  }, [location]);
+
   const returnResponseMessage = (eventType, resolve) => {
     const returnResponseMessageHandler = (event) => {
       if (event.source !== window.parent || event.data?.type !== eventType) {
@@ -20,7 +43,6 @@ const useEmbedManager = () => {
   );
 
   const pushHandler = (callback) => (event) => {
-    console.log(event);
     if (event.data.type === 'push') {
       callback(event);
     }
