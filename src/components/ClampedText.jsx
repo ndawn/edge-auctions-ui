@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-const ClampedText = styled(Typography)(({ maxRows = 1, fontSize = '0.75em' }) => ({
+const ClampedText = styled(Typography)(({ maxRows = 1, fontSize }) => ({
   display: '-webkit-box',
   overflow: 'hidden',
   fontSize,

@@ -1,3 +1,13 @@
+if (window.parent === window) {
+  const redirectUrl = new URL(window.location);
+  redirectUrl.protocol = 'https';
+  redirectUrl.host = 'edgecomics.ru';
+  redirectUrl.port = '';
+  redirectUrl.hash = redirectUrl.pathname;
+  redirectUrl.pathname = '/page/auctions';
+  window.location.replace(redirectUrl);
+}
+
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
